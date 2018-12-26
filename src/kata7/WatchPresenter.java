@@ -18,7 +18,7 @@ public class WatchPresenter implements Watch.Observer {
     public void update() {
         refreshDisplay();
     }
-
+    
     private void refreshDisplay() {
         watchDisplay.paint(pointsOf(watch));
     }

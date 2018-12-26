@@ -2,19 +2,19 @@ package kata7;
 
 import static java.lang.Math.PI;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Watch {
-    private double hours = Math.PI/2;
-    private double minutes = Math.PI/2;
-    private double seconds = Math.PI/2;
     private final Timer timer;
     private final List<Observer> observers = new ArrayList<>();
     private final double SecondStep = 2 * PI / 60;
     private final double MinuteStep = SecondStep / 60;
     private final double HourStep = MinuteStep / 12;
+    Calendar calendar = new GregorianCalendar();
 
     public Watch() {
         timer = new Timer();
@@ -22,15 +22,15 @@ public class Watch {
     }
 
     public double getHours() {
-        return hours;
+        return normalize(Math.PI / 2 - ((calendar.get(Calendar.HOUR_OF_DAY)%12)*60*60+calendar.get(Calendar.MINUTE)*60+calendar.get(Calendar.SECOND))*HourStep);
     }
 
     public double getMinutes() {
-        return minutes;
+        return normalize(Math.PI / 2-(calendar.get(Calendar.MINUTE)*60+calendar.get(Calendar.SECOND))*MinuteStep);
     }
 
     public double getSeconds() {
-        return seconds;
+        return normalize(Math.PI / 2-calendar.get(Calendar.SECOND)*SecondStep);
     }
     
     
@@ -47,9 +47,7 @@ public class Watch {
     }
     
     private void step() {
-        seconds = normalize(seconds - SecondStep);
-        minutes = normalize(minutes - MinuteStep);
-        hours = normalize(hours - HourStep);
+        calendar = new GregorianCalendar();
     }
     
     public void add(Observer observer) {
